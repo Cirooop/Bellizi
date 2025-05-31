@@ -19,6 +19,10 @@ export interface Order {
   components: Component[];
   status: OrderStatus;
   createdAt: Date;
+  clientPhone:string;
+  clientEmail:string;
+   width?: number; // ← nuevo
+  height?: number; // ← nuevo
 }
 
 // Size related types

@@ -3,6 +3,18 @@ import { Order, OrderStatus } from '../types';
 // Generate a random ID
 const generateId = () => Math.random().toString(36).substring(2, 10);
 
+
+const parseSize = (size: string): { width: number; height: number } => {
+  const match = size.match(/([\d.]+)m\s*x\s*([\d.]+)m/);
+  if (match) {
+    return {
+      width: parseFloat(match[1]) * 100,
+      height: parseFloat(match[2]) * 100,
+    };
+  }
+  return { width: 0, height: 0 };
+};
+
 // Generate a list of mock orders
 export const mockOrders: Order[] = [
   {
@@ -10,6 +22,9 @@ export const mockOrders: Order[] = [
     clientName: 'Juan Pérez',
     address: 'Av. Siempreviva 742, Springfield',
     size: '1.5m x 2m',
+    ...parseSize('1.5m x 2m'),
+    clientPhone: '+54 11 5555-1234',
+    clientEmail: 'juan.perez@email.com',
     components: [
       { id: generateId(), type: 'Tubo', description: 'Tubo de aluminio 1.5m', quantity: 1 },
       { id: generateId(), type: 'Tela', description: 'Tela blackout gris 3m²', quantity: 1 },
@@ -24,6 +39,9 @@ export const mockOrders: Order[] = [
     clientName: 'María González',
     address: 'Calle Falsa 123, Buenos Aires',
     size: '2m x 1.8m',
+    ...parseSize('2m x 1.8m'),
+    clientPhone: '+54 11 6666-2345',
+    clientEmail: 'maria.gonzalez@email.com',
     components: [
       { id: generateId(), type: 'Tubo', description: 'Tubo de aluminio 2m', quantity: 1 },
       { id: generateId(), type: 'Tela', description: 'Tela screen beige 3.6m²', quantity: 1 },
@@ -38,6 +56,9 @@ export const mockOrders: Order[] = [
     clientName: 'Carlos Rodríguez',
     address: 'Av. Corrientes 1234, CABA',
     size: '1.2m x 1.5m',
+    ...parseSize('1.2m x 1.5m'),
+    clientPhone: '+54 11 7777-3456',
+    clientEmail: 'carlos.rodriguez@email.com',
     components: [
       { id: generateId(), type: 'Tubo', description: 'Tubo de aluminio 1.2m', quantity: 1 },
       { id: generateId(), type: 'Tela', description: 'Tela sunscreen blanca 1.8m²', quantity: 1 },
@@ -52,6 +73,9 @@ export const mockOrders: Order[] = [
     clientName: 'Ana Martínez',
     address: 'Calle Rivadavia 567, Rosario',
     size: '2.5m x 2m',
+    ...parseSize('2.5m x 2m'),
+    clientPhone: '+54 11 8888-4567',
+    clientEmail: 'ana.martinez@email.com',
     components: [
       { id: generateId(), type: 'Tubo', description: 'Tubo de aluminio 2.5m', quantity: 1 },
       { id: generateId(), type: 'Tela', description: 'Tela blackout azul 5m²', quantity: 1 },
@@ -66,6 +90,9 @@ export const mockOrders: Order[] = [
     clientName: 'Luis Sánchez',
     address: 'Av. Santa Fe 987, CABA',
     size: '1.8m x 2.2m',
+    ...parseSize('1.8m x 2.2m'),
+    clientPhone: '+54 11 9999-5678',
+    clientEmail: 'luis.sanchez@email.com',
     components: [
       { id: generateId(), type: 'Tubo', description: 'Tubo de aluminio 1.8m', quantity: 1 },
       { id: generateId(), type: 'Tela', description: 'Tela screen gris 3.96m²', quantity: 1 },
@@ -80,6 +107,9 @@ export const mockOrders: Order[] = [
     clientName: 'Laura Torres',
     address: 'Calle Belgrano 432, Córdoba',
     size: '2.2m x 1.6m',
+    ...parseSize('2.2m x 1.6m'),
+    clientPhone: '+54 11 1010-6789',
+    clientEmail: 'laura.torres@email.com',
     components: [
       { id: generateId(), type: 'Tubo', description: 'Tubo de aluminio 2.2m', quantity: 1 },
       { id: generateId(), type: 'Tela', description: 'Tela screen beige 3.52m²', quantity: 1 },

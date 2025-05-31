@@ -1,84 +1,136 @@
-import  { useState, useEffect } from 'react';
-import { getOrdersByStatus, updateOrderStatus } from '../../data/orders';
-import { Order } from '../../types';
+import React, { useEffect, useState } from "react";
+import Card from "../../components/ui/Card";
+import Button from "../../components/ui/Button";
+import { getOrdersByStatus, updateOrderStatus } from "../../data/orders";
+import { Order } from "../../types";
 
-const LogisticaHome = () => {
+const LogisticaHome: React.FC = () => {
   const [readyOrders, setReadyOrders] = useState<Order[]>([]);
 
   useEffect(() => {
-    // Get orders ready for delivery
-    const orders = getOrdersByStatus('ready');
-    setReadyOrders(orders);
+    const fetched = getOrdersByStatus("ready");
+    setReadyOrders(fetched);
   }, []);
 
-  // Mark order as delivered
-  const handleMarkAsDelivered = (orderId: string) => {
-    updateOrderStatus(orderId, 'delivered');
-    
-    // Update local state
-    setReadyOrders(readyOrders.filter(order => order.id !== orderId));
+  const handleMarkDelivered = (orderId: string) => {
+    updateOrderStatus(orderId, "delivered");
+    setReadyOrders((prev) => prev.filter((order) => order.id !== orderId));
   };
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Pedidos Listos para Entregar</h1>
-      
-      {readyOrders.length === 0 ? (
-        <div className="bg-white shadow-md rounded-lg p-8 text-center">
-          <p className="text-gray-500">No hay pedidos listos para entregar.</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {readyOrders.map((order) => (
-            <div key={order.id} className="bg-white shadow-md rounded-lg p-4 hover:shadow-lg transition-shadow">
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h3 className="font-medium text-gray-900">Pedido #{order.id.substring(0, 6)}</h3>
-                  <p className="text-sm text-gray-500">
-                    Fecha: {new Date(order.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
-                <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
-                  Listo para entregar
-                </span>
-              </div>
-              
-              <div className="mb-4">
-                <h4 className="text-sm font-medium text-gray-700 mb-1">Cliente:</h4>
-                <p className="text-sm text-gray-900">{order.clientName}</p>
-              </div>
-              
-              <div className="mb-4">
-                <h4 className="text-sm font-medium text-gray-700 mb-1">Dirección de entrega:</h4>
-                <p className="text-sm text-gray-900">{order.address}</p>
-              </div>
-              
-              <div className="mb-4">
-                <h4 className="text-sm font-medium text-gray-700 mb-1">Detalles:</h4>
-                <p className="text-sm text-gray-900">Cortina Roller {order.size}</p>
-                <ul className="mt-2 text-sm text-gray-600 space-y-1">
-                  {order.components.map((component) => (
-                    <li key={component.id} className="flex justify-between">
-                      <span>{component.type}</span>
-                      <span>x{component.quantity}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              
-              <div className="flex justify-end">
-                <button
-                  onClick={() => handleMarkAsDelivered(order.id)}
-                  className="bg-green-600 text-white px-4 py-2 rounded-md text-sm hover:bg-green-700 transition-colors"
-                >
-                  Marcar como Entregado
-                </button>
+    <Card className="p-6">
+      <h2 className="text-xl font-semibold mb-6 text-gray-800">
+        Pedidos Listos para Entregar ({readyOrders.length})
+      </h2>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {readyOrders.map((order) => (
+          <div key={order.id} className="border border-gray-200 rounded-md p-4">
+            <div className="flex justify-between items-start mb-3">
+              <h3 className="font-medium text-gray-800">
+                Pedido #{order.id.substring(0, 6)}
+              </h3>
+              <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">
+                Listo
+              </span>
+            </div>
+
+            <div className="mb-4">
+              <h4 className="font-medium text-gray-700 mb-2">Cliente:</h4>
+              <p className="text-sm text-gray-800 font-medium">
+                {order.clientName}
+              </p>
+              <p className="text-sm text-gray-600">{order.clientPhone}</p>
+              <p className="text-sm text-gray-600">{order.clientEmail}</p>
+            </div>
+
+            <div className="mb-4">
+              <h4 className="font-medium text-gray-700 mb-2">
+                Dirección de Entrega:
+              </h4>
+              <div className="bg-blue-50 p-3 rounded">
+                <p className="text-sm text-blue-800 font-medium">
+                  {order.address}
+                </p>
               </div>
             </div>
-          ))}
+
+            <div className="mb-4">
+              <h4 className="font-medium text-gray-700 mb-2">Producto:</h4>
+              <p className="text-sm text-gray-600 mb-1">
+                Cortina Roller {order.size}
+              </p>
+              <ul className="text-sm text-gray-600 mb-1">
+                {order.components.map((c) => (
+                  <li key={c.id}>
+                    {c.type} × {c.quantity}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mb-4">
+              <h4 className="font-medium text-gray-700 mb-2">
+                Información de Envío:
+              </h4>
+              <div className="bg-gray-50 p-3 rounded">
+                <div className="flex justify-between text-sm mb-1">
+                  <span>Peso estimado:</span>
+                  <span className="font-medium">2.5 kg</span>
+                </div>
+                <div className="flex justify-between text-sm mb-1">
+                  <span>Dimensiones paquete:</span>
+                  <span className="font-medium">
+                    {order.width && order.height
+                      ? Math.max(order.width, order.height) + 10 + " cm"
+                      : "Medida desconocida"}
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span>Zona de entrega:</span>
+                  <span className="font-medium">CABA/GBA</span>
+                </div>
+              </div>
+            </div>
+
+            <Button
+              onClick={() => handleMarkDelivered(order.id)}
+              variant="success"
+              size="sm"
+              className="w-full"
+            >
+              Marcar como Entregado
+            </Button>
+          </div>
+        ))}
+      </div>
+
+      {readyOrders.length === 0 && (
+        <div className="text-center py-12">
+          <div className="bg-gray-100 rounded-full w-24 h-24 mx-auto mb-4 flex items-center justify-center">
+            <svg
+              className="w-12 h-12 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"
+              />
+            </svg>
+          </div>
+          <p className="text-gray-500 text-lg">
+            No hay pedidos listos para entregar
+          </p>
+          <p className="text-gray-400 text-sm mt-2">
+            Los pedidos aparecerán aquí cuando estén listos desde fábrica
+          </p>
         </div>
       )}
-    </div>
+    </Card>
   );
 };
 
