@@ -1,8 +1,7 @@
-import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useRole } from '../../context/RoleContext';
 import { 
-  ShoppingBag, 
+  // ShoppingBag, 
   List, 
   PlusCircle, 
   Truck, 
@@ -11,7 +10,12 @@ import {
   ThumbsUp 
 } from 'lucide-react';
 
-const Sidebar = () => {
+interface SidebarProps {
+  isExpanded: boolean;
+  onHover: (expanded: boolean) => void;
+}
+
+const Sidebar = ({ isExpanded, onHover }: SidebarProps) => {
   const { role } = useRole();
   const location = useLocation();
 
@@ -41,23 +45,29 @@ const Sidebar = () => {
     ],
   };
 
-  // Get nav items for current role
   const currentNavItems = role ? navItems[role as keyof typeof navItems] : [];
 
   return (
-    <aside className="w-64 bg-white shadow-md h-full fixed left-0 top-16 overflow-y-auto hidden md:block">
+    <aside 
+      className={`fixed left-0 top-16 h-full bg-white shadow-md transition-all duration-300 ease-in-out z-20
+        ${isExpanded ? 'w-64' : 'w-16'}`}
+      onMouseEnter={() => onHover(true)}
+      onMouseLeave={() => onHover(false)}
+    >
       <nav className="py-6">
         <ul>
           {currentNavItems.map((item, index) => (
             <li key={index}>
               <Link
                 to={item.path}
-                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-gray-100 transition-colors ${
-                  isActive(item.path) ? 'bg-gray-100 font-medium' : ''
-                }`}
+                className={`flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 transition-colors
+                  ${isActive(item.path) ? 'bg-gray-100 font-medium' : ''}`}
               >
-                <span className="mr-3">{item.icon}</span>
-                {item.label}
+                <span className="min-w-[20px]">{item.icon}</span>
+                <span className={`ml-3 whitespace-nowrap transition-opacity duration-300
+                  ${isExpanded ? 'opacity-100' : 'opacity-0'}`}>
+                  {item.label}
+                </span>
               </Link>
             </li>
           ))}

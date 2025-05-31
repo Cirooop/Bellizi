@@ -1,4 +1,3 @@
-import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useRole } from '../context/RoleContext';
 import RoleSelection from '../views/RoleSelection';
@@ -15,13 +14,13 @@ import FabricaHome from '../views/fabrica/FabricaHome';
 import LogisticaHome from '../views/logistica/LogisticaHome';
 
 // Instalador
-import InstaladorHome from '../views/instalador/InstaladorHome';
 
 // Admin
 import AdminHome from '../views/admin/AdminHome';
 
 // Cliente
 import ClienteHome from '../views/cliente/ClienteHome';
+import InstaladorHome from '../views/instalador/InstaladorHome';
 
 const AppRoutes = () => {
   const { role } = useRole();
@@ -31,7 +30,7 @@ const AppRoutes = () => {
     return (
       <Routes>
         <Route path="/" element={<RoleSelection />} />
-        <Route path="*" element={<Navigate to="/\" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     );
   }
