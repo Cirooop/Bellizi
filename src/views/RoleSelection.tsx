@@ -34,16 +34,16 @@ const RoleSelection = () => {
       icon: <ShoppingBag className="w-12 h-12 mb-4 text-blue-600" />,
     },
     {
-      id: "fabrica",
-      name: "Fábrica",
-      description: "Gestionar pedidos y producción",
-      icon: <Factory className="w-12 h-12 mb-4 text-yellow-600" />,
-    },
-    {
       id: "logistica",
       name: "Logística",
       description: "Coordinar entregas",
       icon: <Truck className="w-12 h-12 mb-4 text-green-600" />,
+    },
+    {
+      id: "fabrica",
+      name: "Fábrica",
+      description: "Gestionar pedidos y producción",
+      icon: <Factory className="w-12 h-12 mb-4 text-yellow-600" />,
     },
     {
       id: "instalador",
